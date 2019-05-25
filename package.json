@@ -1,0 +1,16 @@
+{
+  "name": "egghead-scraper",
+  "version": "1.0.0",
+  "description": "a small node utility to download videos from egghead ",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "fluent-ffmpeg": "^2.1.2",
+    "multi-progress": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
