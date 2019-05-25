@@ -9,7 +9,9 @@ const MAX_PARALLEL_DOWNLOADS = 5;
 const START_INDEX = +process.argv[2] - 1;
 const END_INDEX = +process.argv[3];
 
-fs.mkdirSync(DIRECTORY_NAME);
+try {
+  fs.mkdirSync(DIRECTORY_NAME);
+} catch {}
 
 if (
   isNaN(START_INDEX) ||
@@ -36,16 +38,17 @@ if (
     await Promise.all(
       linkstoDownload
         .splice(0, MAX_PARALLEL_DOWNLOADS)
-        .map(link => download(link))
+        .map((link, index) => download(link, index + 1))
     );
 
     console.log(linkstoDownload.length, "downloads left");
   }
 })();
 
-async function download({ url: link, title }) {
+async function download({ url: link, title }, index) {
+  const name = `${index}.${title}.mp4`;
   await new Promise((resolve, reject) => {
-    const bar = progressBars.newBar(`${title} [:bar]  :percent :etas`, {
+    const bar = progressBars.newBar(`${name} [:bar]  :percent :etas`, {
       complete: "=",
       incomplete: " ",
       width: 20,
@@ -63,7 +66,7 @@ async function download({ url: link, title }) {
       })
       .outputOptions("-c copy")
       .outputOptions("-bsf:a aac_adtstoasc")
-      .output(`${DIRECTORY_NAME}/${title}.mp4`)
+      .output(`${DIRECTORY_NAME}/${name}`)
       .run();
   });
 }
