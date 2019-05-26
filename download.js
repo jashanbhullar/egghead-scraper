@@ -38,7 +38,7 @@ if (
     await Promise.all(
       linkstoDownload
         .splice(0, MAX_PARALLEL_DOWNLOADS)
-        .map((link, index) => download(link, index + 1))
+        .map(link => download(link, links.findIndex(el => el === link) + 1))
     );
 
     console.log(linkstoDownload.length, "downloads left");
