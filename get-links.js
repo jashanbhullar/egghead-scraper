@@ -37,6 +37,7 @@ const getPage = url => {
     );
 
     const lessons = [];
+    const title = data.course.course.title;
 
     for (const lesson of data.course.course.lessons) {
       const {
@@ -50,7 +51,12 @@ const getPage = url => {
       });
     }
 
-    fs.writeFileSync("episode-links.json", JSON.stringify(lessons, null, 4));
+    const toDownload = {
+      title,
+      lessons
+    };
+
+    fs.writeFileSync("episode-links.json", JSON.stringify(toDownload, null, 4));
     console.log(`File saved, total ${lessons.length} episodes to download`);
   } catch (err) {
     console.log("Downloading of the urls failed");

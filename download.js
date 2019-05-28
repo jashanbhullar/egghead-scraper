@@ -2,16 +2,19 @@ const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const Multiprogress = require("multi-progress");
 const progressBars = new Multiprogress(process.stderr);
-const episodes = require("./episode-links");
+const toDownload = require("./episode-links");
 
-const DIRECTORY_NAME = "reward";
+const DIRECTORY_NAME = "reward/" + toDownload.title;
 const MAX_PARALLEL_DOWNLOADS = 5;
 const START_INDEX = +process.argv[2] - 1;
 const END_INDEX = +process.argv[3];
 
 try {
-  fs.mkdirSync(DIRECTORY_NAME);
-} catch {}
+  fs.mkdirSync(DIRECTORY_NAME, { recursive: true });
+} catch {
+  console.log("Error in making directory");
+  process.exit(1);
+}
 
 if (
   isNaN(START_INDEX) ||
@@ -25,8 +28,7 @@ if (
 }
 
 (async () => {
-  const links = episodes;
-
+  const links = toDownload.lessons;
   if (links.length === 0) {
     console.log("0 episodes to download, exiting ");
   }
