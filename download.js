@@ -50,7 +50,7 @@ if (
 })();
 
 async function download({ url: link, title }, index) {
-  const name = `${index}.${title}.mp4`;
+  const name = `${index}.${title.replace(/\//g, "-").replace(/\\/g, "-")}.mp4`;
   await new Promise((resolve, reject) => {
     const bar = progressBars.newBar(`${name} [:bar]  :percent :etas`, {
       complete: "=",
