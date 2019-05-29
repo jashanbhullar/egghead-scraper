@@ -2,6 +2,14 @@ const https = require("https");
 const cheerio = require("cheerio");
 const fs = require("fs");
 
+const LINKS_DIR = "links";
+try {
+  fs.mkdirSync(LINKS_DIR, { recursive: true });
+} catch {
+  console.log("Error in making directory");
+  process.exit(1);
+}
+
 const COURSE_URL = process.argv[2];
 
 if (!COURSE_URL) {
@@ -56,7 +64,10 @@ const getPage = url => {
       lessons
     };
 
-    fs.writeFileSync("episode-links.json", JSON.stringify(toDownload, null, 4));
+    fs.writeFileSync(
+      `${LINKS_DIR}/${title.replace(" ", "-").toLowerCase()}.json`,
+      JSON.stringify(toDownload, null, 4)
+    );
     console.log(`File saved, total ${lessons.length} episodes to download`);
   } catch (err) {
     console.log("Downloading of the urls failed");

@@ -2,12 +2,14 @@ const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const Multiprogress = require("multi-progress");
 const progressBars = new Multiprogress(process.stderr);
-const toDownload = require("./episode-links");
 
-const DIRECTORY_NAME = "reward/" + toDownload.title;
 const MAX_PARALLEL_DOWNLOADS = 5;
-const START_INDEX = +process.argv[2] - 1;
-const END_INDEX = +process.argv[3];
+const LINKS = process.argv[2].toString();
+const START_INDEX = +process.argv[3] - 1;
+const END_INDEX = +process.argv[4];
+
+const toDownload = require("./" + LINKS);
+const DIRECTORY_NAME = "reward/" + toDownload.title;
 
 try {
   fs.mkdirSync(DIRECTORY_NAME, { recursive: true });

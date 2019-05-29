@@ -16,14 +16,14 @@ Copy the url of a publicly available course and then:
 node get-links.js https://egghead.io/courses/javascript-promises-in-depth
 ```
 
-this will generate a `episode-links.json` file
+this will generate a `links/[title-of-the-course].json` file
 
 #### Step 2
 
-Then you can download with `START_INDEX` and `END_INDEX`.
+Then you can download with `links/[title-of-course-file].json` `START_INDEX` and `END_INDEX`.
 
 ```
-node download.js 1 11
+node download.js links/javascript-promises-in-depth 1 11
 ```
 
 This will download videos in the batch of `5` by default.
