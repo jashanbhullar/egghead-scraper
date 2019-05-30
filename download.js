@@ -3,7 +3,7 @@ const ffmpeg = require("fluent-ffmpeg");
 const Multiprogress = require("multi-progress");
 const progressBars = new Multiprogress(process.stderr);
 
-const MAX_PARALLEL_DOWNLOADS = 5;
+const MAX_PARALLEL_DOWNLOADS = 10;
 const LINKS = process.argv[2].toString();
 const START_INDEX = +process.argv[3] - 1;
 const END_INDEX = +process.argv[4];
@@ -52,12 +52,16 @@ if (
 async function download({ url: link, title }, index) {
   const name = `${index}.${title.replace(/\//g, "-").replace(/\\/g, "-")}.mp4`;
   await new Promise((resolve, reject) => {
-    const bar = progressBars.newBar(`${name} [:bar]  :percent :etas`, {
-      complete: "=",
-      incomplete: " ",
-      width: 20,
-      total: 100
-    });
+    const bar = progressBars.newBar(
+      `${name.substr(0, 30) +
+        (name.length > 30 ? "..." : "")}  [:bar]  :percent :etas`,
+      {
+        complete: "=",
+        incomplete: " ",
+        width: 20,
+        total: 100
+      }
+    );
     ffmpeg(link)
       .on("error", error => {
         reject(new Error(error));
